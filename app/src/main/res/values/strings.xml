@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="email">email</string>
+    <string name="name">Name</string>
+    <string name="register">register</string>
+    <string name="login">login</string>
+    <string name="log_out">log out</string>
+    <string name="story_photo">Story Photo</string>
+    <string name="not_story_found">Not story found</string>
+    <string name="story_image">Story Image</string>
+    <string name="description">Description</string>
+    <string name="language">Language</string>
+    <string name="new_story_title">New Story</string>
+    <string name="galery">Galery</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="add_description">Add Description</string>
+    <string name="upload">Upload</string>
+</resources>
