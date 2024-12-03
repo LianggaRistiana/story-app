@@ -2,6 +2,7 @@ package com.dicoding.storyapp.ui.component
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
@@ -24,15 +25,14 @@ class CustomEditText @JvmOverloads constructor(
     private var isPasswordVisible = false
 
     init {
-        // Initialize icons
         showPasswordIcon = AppCompatResources.getDrawable(context, R.drawable.ic_show_password)
         hidePasswordIcon = AppCompatResources.getDrawable(context, R.drawable.ic_hide_password)
         passwordIcon = AppCompatResources.getDrawable(context, R.drawable.baseline_key_24)
 
-        // Setup view
         setupInputType()
         setupIcon()
-//        setupTextWatcher()
+        applyInitialPasswordState()
+        setupTextValidation()
     }
 
     private fun setupInputType() {
@@ -55,7 +55,8 @@ class CustomEditText @JvmOverloads constructor(
                 )
                 compoundDrawablePadding = 16
             }
-            "name" -> {
+
+            "name", "nama" -> {
                 setCompoundDrawablesWithIntrinsicBounds(
                     AppCompatResources.getDrawable(context, R.drawable.baseline_person_24),
                     null, null, null
@@ -63,9 +64,7 @@ class CustomEditText @JvmOverloads constructor(
                 compoundDrawablePadding = 16
             }
 
-            "password" -> {
-
-                // Tambahkan ikon hide password di sebelah kanan
+            "password", "kata sandi" -> {
                 setCompoundDrawablesWithIntrinsicBounds(
                     passwordIcon,
                     null,
@@ -75,38 +74,39 @@ class CustomEditText @JvmOverloads constructor(
                 compoundDrawablePadding = 16
             }
         }
-//
-//        if (hint?.toString()?.lowercase() == "password") {
-//            setCompoundDrawablesWithIntrinsicBounds(null, null, hidePasswordIcon, null)
-//        }
     }
 
-//    private fun setupTextWatcher() {
-//        addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                if (!isValidInput(s)) {
-//                    val errorMessage = when (hint?.toString()?.lowercase()) {
-//                        "email" -> "Username harus minimal 6 karakter."
-//                        "password" -> "Password tidak boleh kurang dari 8 karakter"
-//                        else -> "Input tidak valid."
-//                    }
-//                    setError(errorMessage, null)
-//                }
-//            }
-//
-//            override fun afterTextChanged(s: android.text.Editable?) {}
-//        })
-//    }
+    private fun setupTextValidation() {
+        this.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
 
-//    private fun isValidInput(input: CharSequence?): Boolean {
-//        return when (hint?.toString()?.lowercase()) {
-//            "email" -> !input.isNullOrEmpty() && input.length >= 6
-//            "password" -> !input.isNullOrEmpty() && input.length >= 8
-//            else -> true
-//        }
-//    }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                when (hint?.toString()?.lowercase()) {
+                    "email" -> {
+                        if (!p0.toString().isEmailValid()) {
+                            setError(context.getString(R.string.email_invalid), null)
+                        }
+                    }
+
+                    "name", "nama" -> {
+                        if (!p0.toString().isNameValid()) {
+                            setError(context.getString(R.string.name_invalid), null)
+                        }
+                    }
+
+                    "password", "kata sandi" -> {
+                        if (!p0.toString().isPasswordValid()) {
+                            setError(context.getString(R.string.password_invalid), null)
+                        }
+                    }
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+    }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_UP) {
@@ -134,6 +134,31 @@ class CustomEditText @JvmOverloads constructor(
             null
         )
         compoundDrawablePadding = 16
-        setSelection(text?.length ?: 0) // Keep cursor at the end
+        setSelection(text?.length ?: 0)
+    }
+
+    private fun applyInitialPasswordState() {
+        if (hint?.toString()?.lowercase() in listOf("password", "kata sandi")) {
+            isPasswordVisible = false
+            transformationMethod = PasswordTransformationMethod.getInstance()
+            setCompoundDrawablesWithIntrinsicBounds(
+                passwordIcon, null, hidePasswordIcon, null
+            )
+            compoundDrawablePadding = 16
+        }
+    }
+
+
+    private fun String.isNameValid(): Boolean {
+        return !this.isNullOrEmpty()
+    }
+
+    private fun String.isEmailValid(): Boolean {
+        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+        return this.matches(Regex(emailRegex))
+    }
+
+    private fun String.isPasswordValid(): Boolean {
+        return !this.isNullOrEmpty() && this.length >= 8
     }
 }

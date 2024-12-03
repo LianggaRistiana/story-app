@@ -15,8 +15,8 @@ class ListStoryAdapter(private val onItemClicked: (id: String?) -> Unit) :
     inner class ViewHolder(private val binding: StoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(story: ListStoryItem) {
-            binding.tvIdName.text = story.name
-            binding.tvIdDescription.text = story.description
+            binding.tvItemName.text = story.name
+            binding.tvItemDescription.text = story.description
             Glide.with(itemView.context)
                 .load(story.photoUrl)
                 .placeholder(R.drawable.error_image)

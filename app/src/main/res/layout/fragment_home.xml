@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <!-- Top Bar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
         android:layout_width="0dp"
@@ -18,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:title="@string/app_name" />
 
-    <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_id_story"
         android:layout_width="match_parent"
@@ -31,7 +29,6 @@
         app:layout_constraintTop_toBottomOf="@id/topAppBar"
         tools:listitem="@layout/story_item" />
 
-    <!-- TextView for no stories -->
     <TextView
         android:id="@+id/tv_not_story_found"
         android:layout_width="wrap_content"
@@ -45,7 +42,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ProgressBar -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar"

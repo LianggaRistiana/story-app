@@ -1,5 +1,7 @@
 package com.dicoding.storyapp.ui.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,8 +22,6 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-//    private
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,25 +41,22 @@ class LoginFragment : Fragment() {
             ViewModelFactory.getInstance(requireContext())
         }
 
-       sessionViewModel.getSession().observe(viewLifecycleOwner) {user ->
-           if (user.isLogin) {
-               view.findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-           }
-       }
+        sessionViewModel.getSession().observe(viewLifecycleOwner) { user ->
+            if (user.isLogin) {
+                view.findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            }
+        }
 
-//        viewModel.setEmail("hai")
+        playAnimation()
+
         with(binding.edLoginEmail) {
             setText(viewModel.email.value)
             addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                    if (!viewModel.setEmail(p0.toString())) {
-                        setError("Username harus minimal 6 karakter.", null)
-                    }
+                    viewModel.setEmail(p0.toString())
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
@@ -76,18 +73,12 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    if (!viewModel.setPassword(p0.toString())) {
-                        setError("Password harus minimal 8 karakter.", null)
-                    }
+                    viewModel.setPassword(p0.toString())
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
                 }
             })
-        }
-
-        viewModel.formValid.observe(viewLifecycleOwner) {
-            binding.loginButton.isEnabled = it
         }
 
         binding.loginButton.setOnClickListener {
@@ -110,13 +101,43 @@ class LoginFragment : Fragment() {
 
                 is Result.Success -> {
                     showLoading(false)
-                    Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.login_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     viewModel.clearLoginProcessState()
-//                    view.findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
 
                 else -> {}
             }
+        }
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.loginImage, View.TRANSLATION_Y, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val loginText =
+            ObjectAnimator.ofFloat(binding.loginText, View.ALPHA, 0f, 1f).setDuration(500)
+        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 0f, 1f).setDuration(500)
+        val signup =
+            ObjectAnimator.ofFloat(binding.registerButton, View.ALPHA, 0f, 1f).setDuration(500)
+        val email =
+            ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 0f, 1f).setDuration(500)
+        val password =
+            ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 0f, 1f).setDuration(500)
+
+        val together = AnimatorSet().apply {
+            playTogether(login, signup)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(loginText, email, password, together)
+            start()
         }
     }
 

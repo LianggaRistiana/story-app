@@ -17,7 +17,7 @@ class SessionViewModel(private val userPreference: UserPreference) : ViewModel()
     fun getSession() = userPreference.getUserSession().asLiveData()
 
 
-    fun logOut(){
+    fun logOut() {
         _logOutProcess.value = false
         viewModelScope.launch {
             userPreference.removeUserSession()

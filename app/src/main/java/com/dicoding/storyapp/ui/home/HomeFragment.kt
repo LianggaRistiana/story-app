@@ -1,11 +1,14 @@
 package com.dicoding.storyapp.ui.home
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -45,6 +48,7 @@ class HomeFragment : Fragment() {
         binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_language -> {
+                    startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                     true
                 }
 
@@ -52,9 +56,15 @@ class HomeFragment : Fragment() {
                     sessionViewModel.logOut()
                     true
                 }
+
                 else -> false
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            requireActivity().finish()
+        }
+
 
         val layoutManager =
             if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {

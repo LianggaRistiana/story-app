@@ -1,13 +1,11 @@
 package com.dicoding.storyapp.di
 
 import android.content.Context
-import com.dicoding.storyapp.data.repository.StoryRepository
-import com.dicoding.storyapp.data.repository.UserRepository
 import com.dicoding.storyapp.data.local.UserPreference
 import com.dicoding.storyapp.data.local.dataStore
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import com.dicoding.storyapp.data.repository.StoryRepository
+import com.dicoding.storyapp.data.repository.UserRepository
 
 object Injection {
     fun provideUserRepository(context: Context): UserRepository {
@@ -18,9 +16,8 @@ object Injection {
 
     fun provideStoryRepository(context: Context): StoryRepository {
         val userPreference = UserPreference.getInstance(context.dataStore)
-        val userToken = runBlocking { userPreference.getUserSession().first().token  }
-        val apiService = ApiConfig.getApiService(userToken!!)
-        return StoryRepository.getInstance(apiService)
+        val apiService = ApiConfig.getApiService()
+        return StoryRepository.getInstance(apiService, userPreference)
     }
 
     fun provideSessionPreference(context: Context): UserPreference {

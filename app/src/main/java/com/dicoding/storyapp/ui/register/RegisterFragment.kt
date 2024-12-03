@@ -1,16 +1,18 @@
 package com.dicoding.storyapp.ui.register
 
-import androidx.fragment.app.viewModels
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.dicoding.storyapp.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import com.dicoding.storyapp.R
 import com.dicoding.storyapp.data.remote.Result
 import com.dicoding.storyapp.databinding.FragmentRegisterBinding
 import com.dicoding.storyapp.helper.factory.ViewModelFactory
@@ -18,7 +20,6 @@ import com.dicoding.storyapp.helper.factory.ViewModelFactory
 class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-
 
 
     override fun onCreateView(
@@ -33,22 +34,21 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel: RegisterViewModel by viewModels{
+        val viewModel: RegisterViewModel by viewModels {
             ViewModelFactory.getInstance(requireContext())
         }
+
+        playAnimation()
+
 
         with(binding.edRegisterName) {
             setText(viewModel.email.value)
             addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                    if (!viewModel.setEmail(p0.toString())) {
-                        setError("Username harus minimal 6 karakter.", null)
-                    }
+                    viewModel.setName(p0.toString())
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
@@ -61,19 +61,14 @@ class RegisterFragment : Fragment() {
             setText(viewModel.email.value)
             addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-                    if (!viewModel.setEmail(p0.toString())) {
-                        setError("Username harus minimal 6 karakter.", null)
-                    }
+                    viewModel.setEmail(p0.toString())
                 }
 
                 override fun afterTextChanged(p0: Editable?) {
                 }
-
             })
         }
 
@@ -81,21 +76,15 @@ class RegisterFragment : Fragment() {
             setText(viewModel.password.value)
             addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
                 }
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    if (!viewModel.setPassword(p0.toString())) {
-                        setError("Password harus minimal 8 karakter.", null)
-                    }
+                    viewModel.setPassword(p0.toString())
                 }
+
                 override fun afterTextChanged(p0: Editable?) {
                 }
             })
-        }
-
-        viewModel.formValid.observe(viewLifecycleOwner) {
-            binding.registerButton.isEnabled = it
         }
 
         binding.registerButton.setOnClickListener {
@@ -119,37 +108,49 @@ class RegisterFragment : Fragment() {
 
                 is Result.Success -> {
                     showLoading(false)
-                    Toast.makeText(requireContext(), "Register Success", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.register_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     viewModel.clearRegisterProcessState()
-                    viewModel.login()
-                }
-                else -> {}
-            }
-        }
-
-        viewModel.loginProcessState.observe(viewLifecycleOwner) {
-            when (it) {
-                is Result.Error -> {
-                    showLoading(false)
-                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_SHORT)
-                        .show()
                 }
 
-                Result.Loading -> {
-                    Toast.makeText(requireContext(), "Waiting for Login", Toast.LENGTH_SHORT).show()
-                    showLoading(true)
-                }
-
-                is Result.Success -> {
-                    showLoading(false)
-                    Toast.makeText(requireContext(), "Login Success", Toast.LENGTH_SHORT).show()
-                    viewModel.clearLoginProcessState()
-                    view.findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
-                }
                 else -> {}
             }
         }
     }
+
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.registerImage, View.TRANSLATION_Y, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val registerText =
+            ObjectAnimator.ofFloat(binding.registerText, View.ALPHA, 0f, 1f).setDuration(500)
+        val login = ObjectAnimator.ofFloat(binding.loginButton, View.ALPHA, 0f, 1f).setDuration(500)
+        val signup =
+            ObjectAnimator.ofFloat(binding.registerButton, View.ALPHA, 0f, 1f).setDuration(500)
+        val email =
+            ObjectAnimator.ofFloat(binding.edRegisterEmail, View.ALPHA, 0f, 1f).setDuration(500)
+        val password =
+            ObjectAnimator.ofFloat(binding.edRegisterPassword, View.ALPHA, 0f, 1f).setDuration(500)
+        val name =
+            ObjectAnimator.ofFloat(binding.edRegisterName, View.ALPHA, 0f, 1f).setDuration(500)
+
+        val together = AnimatorSet().apply {
+            playTogether(login, signup)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(registerText, name, email, password, together)
+            start()
+        }
+    }
+
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE

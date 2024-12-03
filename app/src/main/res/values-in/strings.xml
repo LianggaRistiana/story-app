@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="username">Nama</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email">Email</string>
+    <string name="name">Nama</string>
+    <string name="register">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="log_out">Keluar</string>
+    <string name="story_photo">Foto Cerita</string>
+    <string name="not_story_found">Cerita tidak ditemukan</string>
+    <string name="story_image">Foto Cerita</string>
+    <string name="description">Deskripsi</string>
+    <string name="language">Bahasa</string>
+    <string name="new_story_title">Cerita Baru</string>
+    <string name="gallery">Galeri</string>
+    <string name="camera">Kamera</string>
+    <string name="add_description">Tambah Deskripsi</string>
+    <string name="upload">Unggah</string>
+    <string name="email_invalid">Email Tidak Valid</string>
+    <string name="password_invalid">Kata sandi setidaknya berisi 8 karakter</string>
+    <string name="login_success">Berhasil Masuk</string>
+    <string name="register_success">Berhasil daftar</string>
+    <string name="name_invalid">Nama tidak boleh kosong</string>
+    <string name="appwidget_text">Widget Cerita</string>
+    <string name="empty_text">Tidak ada data</string>
+    <string name="app_widget_description">Menampilkan gambar dari cerita di dicoding</string>
+</resources>

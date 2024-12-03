@@ -18,10 +18,6 @@ class UserRepository(
 
 ) {
 
-    suspend fun getUserSession() = userPreference.getUserSession()
-    suspend fun updateUserSession(user: UserModel) = userPreference.updateUserSession(user)
-    suspend fun removeUserSession() = userPreference.removeUserSession()
-
     suspend fun login(loginRequest: LoginRequest): Result<LoginResponse> {
         return try {
             val response = apiService.login(loginRequest)
@@ -47,10 +43,15 @@ class UserRepository(
     suspend fun register(registerRequest: RegisterRequest): Result<GeneralResponse> {
         return try {
             val response = apiService.register(registerRequest)
+            Log.e(TAG, "register: ${registerRequest}")
             Result.Success(response)
         } catch (e: HttpException) {
-            Log.e(TAG, "register: ${e.message()}")
-            Result.Error(e.message())
+            val jsonInString = e.response()?.errorBody()?.string()
+            val errorBody = Gson().fromJson(jsonInString, GeneralResponse::class.java)
+            Result.Error(errorBody.message!!)
+        } catch (e: Exception) {
+            Log.e(TAG, "register: ${e}")
+            Result.Error(e.toString())
         }
     }
 
