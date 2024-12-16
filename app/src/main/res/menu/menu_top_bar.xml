@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/menu_map"
+        android:icon="@drawable/baseline_map_24"
+        android:title="@string/map"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
     <item
         android:id="@+id/menu_language"
         android:icon="@drawable/baseline_language_24"

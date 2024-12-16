@@ -71,6 +71,7 @@ class StoryRepository(
             )
             val token = userPreference.getUserSession().first().token
             val response = apiService.addStory(multipartBody, requestBody, "Bearer $token")
+            Log.d(TAG, "addStory: $response")
             Result.Success(response)
         } catch (e: HttpException) {
             val jsonInString = e.response()?.errorBody()?.string()

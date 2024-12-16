@@ -26,4 +26,5 @@
     <string name="appwidget_text">Widget Cerita</string>
     <string name="empty_text">Tidak ada data</string>
     <string name="app_widget_description">Menampilkan gambar dari cerita di dicoding</string>
+    <string name="map">peta</string>
 </resources>

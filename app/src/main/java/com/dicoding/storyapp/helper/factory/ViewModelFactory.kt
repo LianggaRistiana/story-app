@@ -12,6 +12,7 @@ import com.dicoding.storyapp.ui.add.AddStoryViewModel
 import com.dicoding.storyapp.ui.detail.DetailViewModel
 import com.dicoding.storyapp.ui.home.HomeViewModel
 import com.dicoding.storyapp.ui.login.LoginViewModel
+import com.dicoding.storyapp.ui.map.MapViewModel
 import com.dicoding.storyapp.ui.register.RegisterViewModel
 
 class ViewModelFactory private constructor(
@@ -33,6 +34,8 @@ class ViewModelFactory private constructor(
             return DetailViewModel(storyRepository) as T
         } else if (modelClass.isAssignableFrom(AddStoryViewModel::class.java)) {
             return AddStoryViewModel(storyRepository) as T
+        }else if (modelClass.isAssignableFrom(MapViewModel::class.java)) {
+            return MapViewModel(storyRepository) as T
         }
 
         throw IllegalArgumentException("Unknown Model : ${modelClass.name}")

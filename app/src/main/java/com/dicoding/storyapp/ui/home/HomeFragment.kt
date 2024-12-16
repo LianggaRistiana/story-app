@@ -56,6 +56,10 @@ class HomeFragment : Fragment() {
                     sessionViewModel.logOut()
                     true
                 }
+                R.id.menu_map -> {
+                    view.findNavController().navigate(R.id.action_homeFragment_to_mapsActivity)
+                    true
+                }
 
                 else -> false
             }
