@@ -38,7 +38,10 @@ class StackRemoteViewsFactory(private val context: Context) :
             val token = UserPreference.getInstance(context.dataStore).getUserSession().first().token
 
             try {
-                val response = apiService.getStories("0", "Bearer ${token!!}")
+                val response = apiService.getStories(
+                    location = "0",
+                    token = "Bearer ${token!!}"
+                )
                 Log.d("Widget", "Response: ${response.listStory}")
 
                 response.listStory?.take(5)?.forEach { image ->

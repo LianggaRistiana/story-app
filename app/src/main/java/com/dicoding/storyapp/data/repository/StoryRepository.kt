@@ -3,7 +3,12 @@ package com.dicoding.storyapp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.dicoding.storyapp.data.local.UserPreference
+import com.dicoding.storyapp.data.paging.StoryPagingSource
 import com.dicoding.storyapp.data.remote.Result
 import com.dicoding.storyapp.data.remote.response.DetailStoryResponse
 import com.dicoding.storyapp.data.remote.response.GeneralResponse
@@ -25,11 +30,26 @@ class StoryRepository(
     private val userPreference: UserPreference
 ) {
 
+
+    fun getStoriesWithPaging(): LiveData<PagingData<ListStoryItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                StoryPagingSource(apiService, userPreference)
+            }
+        ).liveData
+    }
+
     fun getStories(location: String): LiveData<Result<List<ListStoryItem>>> = liveData {
         emit(Result.Loading)
         try {
             val token = userPreference.getUserSession().first().token
-            val response = apiService.getStories(location, "Bearer $token")
+            val response = apiService.getStories(
+                location = location,
+                token = "Bearer $token",
+            )
             val stories = response.listStory.orEmpty().filterNotNull()
             emit(Result.Success(stories))
         } catch (e: HttpException) {

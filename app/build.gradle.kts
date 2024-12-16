@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs")
+    id("com.google.devtools.ksp")
+    id("kotlin-parcelize")
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
@@ -68,6 +70,13 @@ dependencies {
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.play.services.maps)
+
+//    room
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.room.compiler)
+
+//    pagging
+    implementation(libs.androidx.paging.runtime.ktx)
 
 //    test
     testImplementation(libs.junit)

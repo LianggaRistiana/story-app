@@ -7,15 +7,14 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.myunlimitedquotes.adapter.LoadingStateAdapter
 import com.dicoding.storyapp.R
-import com.dicoding.storyapp.data.remote.Result
 import com.dicoding.storyapp.databinding.FragmentHomeBinding
 import com.dicoding.storyapp.helper.adaptor.ListStoryAdapter
 import com.dicoding.storyapp.helper.factory.ViewModelFactory
@@ -81,34 +80,44 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(storyId)
             view.findNavController().navigate(action)
         }
+        binding.rvIdStory.adapter = adapter
+            .withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
+            }
+        )
+
+        viewModel.story.observe(viewLifecycleOwner) {
+            adapter.submitData(lifecycle, it)
+        }
 
         binding.rvIdStory.apply {
             setHasFixedSize(true)
             setLayoutManager(layoutManager)
         }
 
-        viewModel.getStories().observe(viewLifecycleOwner) {
-            when (it) {
-                is Result.Error -> {
-                    showLoading(false)
-                    binding.tvNotStoryFound.visibility = View.VISIBLE
-                    Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
-                }
-
-                Result.Loading -> {
-                    showLoading(true)
-                    binding.tvNotStoryFound.visibility = View.GONE
-                }
-
-                is Result.Success -> {
-                    showLoading(false)
-                    binding.tvNotStoryFound.visibility =
-                        if (it.data.isEmpty()) View.VISIBLE else View.GONE
-                    adapter.submitList(it.data)
-                    binding.rvIdStory.adapter = adapter
-                }
-            }
-        }
+//        viewModel.getStories().observe(viewLifecycleOwner) {
+//            when (it) {
+//                is Result.Error -> {
+//                    showLoading(false)
+//                    binding.tvNotStoryFound.visibility = View.VISIBLE
+//                    Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
+//                }
+//
+//                Result.Loading -> {
+//                    showLoading(true)
+//                    binding.tvNotStoryFound.visibility = View.GONE
+//                }
+//
+//                is Result.Success -> {
+//                    showLoading(false)
+//                    binding.tvNotStoryFound.visibility =
+//                        if (it.data.isEmpty()) View.VISIBLE else View.GONE
+//                    adapter.submitList(it.data)
+//                    binding.rvIdStory.adapter = adapter
+//                }
+//            }
+//        }
 
 
         binding.btnIdAdd.setOnClickListener {
