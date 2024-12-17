@@ -3,12 +3,15 @@ package com.dicoding.storyapp.data.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.dicoding.storyapp.data.local.UserPreference
-import com.dicoding.storyapp.data.paging.StoryPagingSource
+import com.dicoding.storyapp.data.local.entity.StoryEntity
+import com.dicoding.storyapp.data.local.room.StoryDatabase
+import com.dicoding.storyapp.data.paging.StoryRemoteMediator
 import com.dicoding.storyapp.data.remote.Result
 import com.dicoding.storyapp.data.remote.response.DetailStoryResponse
 import com.dicoding.storyapp.data.remote.response.GeneralResponse
@@ -27,17 +30,19 @@ import java.io.File
 
 class StoryRepository(
     private val apiService: ApiService,
-    private val userPreference: UserPreference
+    private val userPreference: UserPreference,
+    private val storyDatabase: StoryDatabase
 ) {
 
-
-    fun getStoriesWithPaging(): LiveData<PagingData<ListStoryItem>> {
+    @OptIn(ExperimentalPagingApi::class)
+    fun getStoriesWithPaging(): LiveData<PagingData<StoryEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 5
             ),
+            remoteMediator = StoryRemoteMediator(storyDatabase, apiService, userPreference),
             pagingSourceFactory = {
-                StoryPagingSource(apiService, userPreference)
+                storyDatabase.storyDao().getStory()
             }
         ).liveData
     }
@@ -109,9 +114,9 @@ class StoryRepository(
         @Volatile
         private var INSTANCE: StoryRepository? = null
 
-        fun getInstance(apiService: ApiService, userPreference: UserPreference): StoryRepository =
+        fun getInstance(apiService: ApiService, userPreference: UserPreference, storyDatabase: StoryDatabase): StoryRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: StoryRepository(apiService, userPreference).also { INSTANCE = it }
+                INSTANCE ?: StoryRepository(apiService, userPreference, storyDatabase).also { INSTANCE = it }
             }
     }
 }
