@@ -71,9 +71,11 @@ class AddStoryFragment : Fragment() {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
                     getMyLastLocation()
                 }
+
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
                     getMyLastLocation()
                 }
+
                 else -> {
                 }
             }
@@ -87,9 +89,9 @@ class AddStoryFragment : Fragment() {
     }
 
     private fun getMyLastLocation() {
-        if     (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
+        if (checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) &&
             checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
-        ){
+        ) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
                     viewModel.setCurrentLat(location.latitude.toFloat())
@@ -148,7 +150,7 @@ class AddStoryFragment : Fragment() {
             binding.location.isChecked = it == true
             if (it == true) {
                 getMyLastLocation()
-            }else{
+            } else {
                 viewModel.setCurrentLat(null)
                 viewModel.setCurrentLon(null)
             }

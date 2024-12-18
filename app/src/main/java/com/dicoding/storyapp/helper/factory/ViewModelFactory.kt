@@ -34,7 +34,7 @@ class ViewModelFactory private constructor(
             return DetailViewModel(storyRepository) as T
         } else if (modelClass.isAssignableFrom(AddStoryViewModel::class.java)) {
             return AddStoryViewModel(storyRepository) as T
-        }else if (modelClass.isAssignableFrom(MapViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(MapViewModel::class.java)) {
             return MapViewModel(storyRepository) as T
         }
 

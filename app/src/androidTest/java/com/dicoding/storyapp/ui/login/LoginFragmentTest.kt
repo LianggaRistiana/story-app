@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class LoginFragmentTest{
+class LoginFragmentTest {
     private val mockWebServer = MockWebServer()
 
     @Before
@@ -35,7 +35,7 @@ class LoginFragmentTest{
     }
 
     @Test
-    fun testLoginAndLogOut(){
+    fun testLoginAndLogOut() {
         val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
         val mockResponse = MockResponse()
@@ -43,7 +43,10 @@ class LoginFragmentTest{
             .setBody(JsonConverter.readStringFromFile("login_success_response.json"))
         mockWebServer.enqueue(mockResponse)
 
-        onView(withId(R.id.ed_login_email)).perform(typeText("user@example.com"), closeSoftKeyboard())
+        onView(withId(R.id.ed_login_email)).perform(
+            typeText("user@example.com"),
+            closeSoftKeyboard()
+        )
         onView(withId(R.id.ed_login_password)).perform(typeText("password123"), closeSoftKeyboard())
         onView(withId(R.id.loginButton)).perform(click())
         onView(withId(R.id.homeFragment))

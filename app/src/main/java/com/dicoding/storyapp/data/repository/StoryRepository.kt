@@ -8,8 +8,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.dicoding.storyapp.data.local.pref.UserPreference
 import com.dicoding.storyapp.data.local.entity.StoryEntity
+import com.dicoding.storyapp.data.local.pref.UserPreference
 import com.dicoding.storyapp.data.local.room.StoryDatabase
 import com.dicoding.storyapp.data.paging.StoryRemoteMediator
 import com.dicoding.storyapp.data.remote.Result
@@ -84,7 +84,12 @@ class StoryRepository(
         }
     }
 
-    suspend fun addStory(image: File, description: String, lat: Float? = null, lon: Float? = null): Result<GeneralResponse> {
+    suspend fun addStory(
+        image: File,
+        description: String,
+        lat: Float? = null,
+        lon: Float? = null
+    ): Result<GeneralResponse> {
         Result.Loading
         return try {
             val requestBody = description.toRequestBody("text/plain".toMediaType())
@@ -103,7 +108,8 @@ class StoryRepository(
                 lon = lonRequestBody,
                 description = requestBody,
                 file = multipartBody,
-                token = "Bearer $token")
+                token = "Bearer $token"
+            )
             Log.d(TAG, "addStory: $response")
             Result.Success(response)
         } catch (e: HttpException) {
@@ -122,9 +128,17 @@ class StoryRepository(
         @Volatile
         private var INSTANCE: StoryRepository? = null
 
-        fun getInstance(apiService: ApiService, userPreference: UserPreference, storyDatabase: StoryDatabase): StoryRepository =
+        fun getInstance(
+            apiService: ApiService,
+            userPreference: UserPreference,
+            storyDatabase: StoryDatabase
+        ): StoryRepository =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: StoryRepository(apiService, userPreference, storyDatabase).also { INSTANCE = it }
+                INSTANCE ?: StoryRepository(
+                    apiService,
+                    userPreference,
+                    storyDatabase
+                ).also { INSTANCE = it }
             }
     }
 }

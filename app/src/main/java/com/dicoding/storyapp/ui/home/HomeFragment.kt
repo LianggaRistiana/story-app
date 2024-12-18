@@ -13,10 +13,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.storyapp.helper.adaptor.LoadingStateAdapter
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.databinding.FragmentHomeBinding
 import com.dicoding.storyapp.helper.adaptor.ListStoryAdapter
+import com.dicoding.storyapp.helper.adaptor.LoadingStateAdapter
 import com.dicoding.storyapp.helper.factory.ViewModelFactory
 import com.dicoding.storyapp.ui.SessionViewModel
 
