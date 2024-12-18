@@ -16,6 +16,9 @@ android {
         buildConfig = true
     }
 
+    testOptions{
+        animationsDisabled = true
+    }
 
     defaultConfig {
         applicationId = "com.dicoding.storyapp"
@@ -87,11 +90,21 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    androidTestImplementation(libs.androidx.core.testing) //InstantTaskExecutorRule
-    androidTestImplementation(libs.kotlinx.coroutines.test) //TestDispatcher
-    testImplementation(libs.androidx.core.testing) // InstantTaskExecutorRule
+    androidTestImplementation(libs.androidx.core.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.core.testing)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
+//    debugImplementation(libs.androidx.fragment.testing)
+    androidTestImplementation(libs.mockwebserver)
+    androidTestImplementation(libs.okhttp3.okhttp.tls)
+
+
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation ("androidx.test.espresso:espresso-idling-resource:3.5.1")
+    androidTestImplementation ("androidx.test:rules:1.5.0")
+    androidTestImplementation ("androidx.test:runner:1.5.2")
+    androidTestImplementation ("androidx.fragment:fragment-testing:1.5.2")
 }
