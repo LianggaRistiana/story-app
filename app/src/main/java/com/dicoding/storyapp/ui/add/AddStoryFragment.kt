@@ -69,11 +69,9 @@ class AddStoryFragment : Fragment() {
         ) { permissions ->
             when {
                 permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                    // Precise location access granted.
                     getMyLastLocation()
                 }
                 permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                    // Only approximate location access granted.
                     getMyLastLocation()
                 }
                 else -> {
@@ -97,6 +95,7 @@ class AddStoryFragment : Fragment() {
                     viewModel.setCurrentLat(location.latitude.toFloat())
                     viewModel.setCurrentLon(location.longitude.toFloat())
                 } else {
+                    viewModel.setCurrentLocationState(false)
                     Toast.makeText(
                         requireContext(),
                         "Location is not found. Try Again",

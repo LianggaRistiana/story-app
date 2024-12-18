@@ -1,4 +1,4 @@
-package com.dicoding.myunlimitedquotes.adapter
+package com.dicoding.storyapp.helper.adaptor
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

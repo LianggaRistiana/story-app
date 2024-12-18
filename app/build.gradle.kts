@@ -96,15 +96,13 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
-//    debugImplementation(libs.androidx.fragment.testing)
+    androidTestImplementation(libs.espresso.contrib)
     androidTestImplementation(libs.mockwebserver)
     androidTestImplementation(libs.okhttp3.okhttp.tls)
-
-
-    androidTestImplementation ("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation ("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation ("androidx.test.espresso:espresso-idling-resource:3.5.1")
-    androidTestImplementation ("androidx.test:rules:1.5.0")
-    androidTestImplementation ("androidx.test:runner:1.5.2")
-    androidTestImplementation ("androidx.fragment:fragment-testing:1.5.2")
+    implementation(libs.androidx.espresso.idling.resource)
+    androidTestImplementation (libs.androidx.espresso.core.v351)
+    androidTestImplementation (libs.androidx.junit.v115)
+    androidTestImplementation (libs.androidx.rules)
+    androidTestImplementation (libs.androidx.runner)
+    androidTestImplementation (libs.androidx.fragment.testing)
 }

@@ -9,6 +9,7 @@ import com.dicoding.storyapp.data.remote.request.RegisterRequest
 import com.dicoding.storyapp.data.remote.response.GeneralResponse
 import com.dicoding.storyapp.data.remote.response.LoginResponse
 import com.dicoding.storyapp.data.remote.retrofit.ApiService
+import com.dicoding.storyapp.helper.util.wrapEspressoIdlingResource
 import com.google.gson.Gson
 import retrofit2.HttpException
 
@@ -19,24 +20,26 @@ class UserRepository(
 ) {
 
     suspend fun login(loginRequest: LoginRequest): Result<LoginResponse> {
-        return try {
-            val response = apiService.login(loginRequest)
-            userPreference.updateUserSession(
-                UserModel(
-                    response.loginResult?.name,
-                    response.loginResult?.userId,
-                    response.loginResult?.token,
-                    true
+        return wrapEspressoIdlingResource {
+            try {
+                val response = apiService.login(loginRequest)
+                userPreference.updateUserSession(
+                    UserModel(
+                        response.loginResult?.name,
+                        response.loginResult?.userId,
+                        response.loginResult?.token,
+                        true
+                    )
                 )
-            )
-            Result.Success(response)
-        } catch (e: HttpException) {
-            val jsonInString = e.response()?.errorBody()?.string()
-            val errorBody = Gson().fromJson(jsonInString, LoginResponse::class.java)
-            Result.Error(errorBody.message!!)
-        } catch (e: Exception) {
-            Log.e(TAG, "login: ${e}")
-            Result.Error(e.toString())
+                Result.Success(response)
+            } catch (e: HttpException) {
+                val jsonInString = e.response()?.errorBody()?.string()
+                val errorBody = Gson().fromJson(jsonInString, LoginResponse::class.java)
+                Result.Error(errorBody.message!!)
+            } catch (e: Exception) {
+                Log.e(TAG, "login: ${e}")
+                Result.Error(e.toString())
+            }
         }
     }
 

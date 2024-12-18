@@ -13,7 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.myunlimitedquotes.adapter.LoadingStateAdapter
+import com.dicoding.storyapp.helper.adaptor.LoadingStateAdapter
 import com.dicoding.storyapp.R
 import com.dicoding.storyapp.databinding.FragmentHomeBinding
 import com.dicoding.storyapp.helper.adaptor.ListStoryAdapter
@@ -38,11 +38,6 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        adapter?.refresh()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val sessionViewModel: SessionViewModel by viewModels {
@@ -62,6 +57,7 @@ class HomeFragment : Fragment() {
                     sessionViewModel.logOut()
                     true
                 }
+
                 R.id.menu_map -> {
                     view.findNavController().navigate(R.id.action_homeFragment_to_mapsActivity)
                     true
@@ -90,10 +86,10 @@ class HomeFragment : Fragment() {
 
         binding.rvIdStory.adapter = adapter!!
             .withLoadStateFooter(
-            footer = LoadingStateAdapter {
-                adapter!!.retry()
-            }
-        )
+                footer = LoadingStateAdapter {
+                    adapter!!.retry()
+                }
+            )
 
         viewModel.story.observe(viewLifecycleOwner) {
             adapter!!.submitData(lifecycle, it)
@@ -114,11 +110,6 @@ class HomeFragment : Fragment() {
                 view.findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
             }
         }
-    }
-
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
 }
