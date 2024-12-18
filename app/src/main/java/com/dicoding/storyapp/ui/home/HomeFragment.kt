@@ -23,6 +23,12 @@ import com.dicoding.storyapp.ui.SessionViewModel
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private var adapter: ListStoryAdapter? = null
+
+    private val viewModel: HomeViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,13 +38,14 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        adapter?.refresh()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val sessionViewModel: SessionViewModel by viewModels {
-            ViewModelFactory.getInstance(requireContext())
-        }
-
-        val viewModel: HomeViewModel by viewModels {
             ViewModelFactory.getInstance(requireContext())
         }
 
@@ -76,19 +83,20 @@ class HomeFragment : Fragment() {
                 LinearLayoutManager(requireContext())
             }
 
-        val adapter = ListStoryAdapter { storyId ->
+        adapter = ListStoryAdapter { storyId ->
             val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(storyId)
             view.findNavController().navigate(action)
         }
-        binding.rvIdStory.adapter = adapter
+
+        binding.rvIdStory.adapter = adapter!!
             .withLoadStateFooter(
             footer = LoadingStateAdapter {
-                adapter.retry()
+                adapter!!.retry()
             }
         )
 
         viewModel.story.observe(viewLifecycleOwner) {
-            adapter.submitData(lifecycle, it)
+            adapter!!.submitData(lifecycle, it)
         }
 
         binding.rvIdStory.apply {
