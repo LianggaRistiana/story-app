@@ -3,7 +3,7 @@ package com.dicoding.storyapp.data.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.dicoding.storyapp.data.local.UserPreference
+import com.dicoding.storyapp.data.local.pref.UserPreference
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.first

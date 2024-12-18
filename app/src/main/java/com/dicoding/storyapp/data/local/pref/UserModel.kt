@@ -1,4 +1,4 @@
-package com.dicoding.storyapp.data.local
+package com.dicoding.storyapp.data.local.pref
 
 data class UserModel(
     val userId: String? = null,

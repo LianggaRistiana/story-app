@@ -1,8 +1,8 @@
 package com.dicoding.storyapp.data.repository
 
 import android.util.Log
-import com.dicoding.storyapp.data.local.UserModel
-import com.dicoding.storyapp.data.local.UserPreference
+import com.dicoding.storyapp.data.local.pref.UserModel
+import com.dicoding.storyapp.data.local.pref.UserPreference
 import com.dicoding.storyapp.data.remote.Result
 import com.dicoding.storyapp.data.remote.request.LoginRequest
 import com.dicoding.storyapp.data.remote.request.RegisterRequest

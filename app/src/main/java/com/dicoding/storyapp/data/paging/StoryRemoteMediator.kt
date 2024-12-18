@@ -6,7 +6,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.dicoding.storyapp.data.local.UserPreference
+import com.dicoding.storyapp.data.local.pref.UserPreference
 import com.dicoding.storyapp.data.local.entity.RemoteKeys
 import com.dicoding.storyapp.data.local.entity.StoryEntity
 import com.dicoding.storyapp.data.local.room.StoryDatabase

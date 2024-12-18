@@ -8,7 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.dicoding.storyapp.data.local.UserPreference
+import com.dicoding.storyapp.data.local.pref.UserPreference
 import com.dicoding.storyapp.data.local.entity.StoryEntity
 import com.dicoding.storyapp.data.local.room.StoryDatabase
 import com.dicoding.storyapp.data.paging.StoryRemoteMediator

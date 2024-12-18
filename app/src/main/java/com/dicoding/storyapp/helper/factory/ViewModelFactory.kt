@@ -3,7 +3,7 @@ package com.dicoding.storyapp.helper.factory
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dicoding.storyapp.data.local.UserPreference
+import com.dicoding.storyapp.data.local.pref.UserPreference
 import com.dicoding.storyapp.data.repository.StoryRepository
 import com.dicoding.storyapp.data.repository.UserRepository
 import com.dicoding.storyapp.di.Injection

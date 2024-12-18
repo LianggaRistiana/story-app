@@ -9,8 +9,8 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import androidx.core.os.bundleOf
 import com.dicoding.storyapp.R
-import com.dicoding.storyapp.data.local.UserPreference
-import com.dicoding.storyapp.data.local.dataStore
+import com.dicoding.storyapp.data.local.pref.UserPreference
+import com.dicoding.storyapp.data.local.pref.dataStore
 import com.dicoding.storyapp.data.remote.response.ListStoryItem
 import com.dicoding.storyapp.data.remote.retrofit.ApiConfig
 import com.dicoding.storyapp.widget.ImageBannerWidget

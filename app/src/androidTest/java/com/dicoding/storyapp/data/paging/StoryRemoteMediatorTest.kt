@@ -9,9 +9,9 @@ import androidx.paging.RemoteMediator
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.dicoding.storyapp.data.local.UserModel
-import com.dicoding.storyapp.data.local.UserPreference
-import com.dicoding.storyapp.data.local.dataStore
+import com.dicoding.storyapp.data.local.pref.UserModel
+import com.dicoding.storyapp.data.local.pref.UserPreference
+import com.dicoding.storyapp.data.local.pref.dataStore
 import com.dicoding.storyapp.data.local.entity.StoryEntity
 import com.dicoding.storyapp.data.local.room.StoryDatabase
 import com.dicoding.storyapp.data.remote.request.LoginRequest
