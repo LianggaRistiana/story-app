@@ -96,30 +96,6 @@ class HomeFragment : Fragment() {
             setLayoutManager(layoutManager)
         }
 
-//        viewModel.getStories().observe(viewLifecycleOwner) {
-//            when (it) {
-//                is Result.Error -> {
-//                    showLoading(false)
-//                    binding.tvNotStoryFound.visibility = View.VISIBLE
-//                    Toast.makeText(context, it.error, Toast.LENGTH_SHORT).show()
-//                }
-//
-//                Result.Loading -> {
-//                    showLoading(true)
-//                    binding.tvNotStoryFound.visibility = View.GONE
-//                }
-//
-//                is Result.Success -> {
-//                    showLoading(false)
-//                    binding.tvNotStoryFound.visibility =
-//                        if (it.data.isEmpty()) View.VISIBLE else View.GONE
-//                    adapter.submitList(it.data)
-//                    binding.rvIdStory.adapter = adapter
-//                }
-//            }
-//        }
-
-
         binding.btnIdAdd.setOnClickListener {
             view.findNavController().navigate(R.id.action_homeFragment_to_addStoryFragment)
         }

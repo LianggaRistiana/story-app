@@ -63,14 +63,22 @@
                 app:layout_constraintStart_toEndOf="@+id/btn_gallery"
                 app:layout_constraintTop_toBottomOf="@+id/iv_item_photo" />
 
+            <CheckBox
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/add_current_location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_gallery"
+                android:checked="false" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_gallery">
+                app:layout_constraintTop_toBottomOf="@+id/location">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_add_description"
@@ -84,6 +92,7 @@
                     android:scrollbars="vertical" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <Button
                 android:id="@+id/btn_upload"

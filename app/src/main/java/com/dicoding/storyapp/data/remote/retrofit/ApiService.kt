@@ -44,6 +44,8 @@ interface ApiService {
     suspend fun addStory(
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
-        @Header("Authorization") token: String
+        @Part("lat") lat: RequestBody? = null,
+        @Part("lon") lon: RequestBody? = null,
+        @Header("Authorization") token: String,
     ): GeneralResponse
 }

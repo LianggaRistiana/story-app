@@ -16,6 +16,27 @@ class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewMode
     private val _currentImageUri = MutableLiveData<Uri?>()
     val currentImageUri: MutableLiveData<Uri?> = _currentImageUri
 
+    private val _currentLocationState = MutableLiveData<Boolean?>()
+    val currentLocationState: MutableLiveData<Boolean?> = _currentLocationState
+
+    private val _currentLat = MutableLiveData<Float?>()
+    val currentLat: MutableLiveData<Float?> = _currentLat
+
+    private val _currentLon = MutableLiveData<Float?>()
+    val currentLon: MutableLiveData<Float?> = _currentLon
+
+    fun setCurrentLat(lat: Float?) {
+        _currentLat.value = lat
+    }
+
+    fun setCurrentLon(lon: Float?) {
+        _currentLon.value = lon
+    }
+
+    fun setCurrentLocationState(state: Boolean?) {
+        _currentLocationState.value = state
+    }
+
     private val _currentDescription = MutableLiveData<String?>()
 
     private val _uploadState = MutableLiveData<Result<GeneralResponse>>()
@@ -35,7 +56,9 @@ class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewMode
             viewModelScope.launch {
                 _uploadState.value = storyRepository.addStory(
                     uriToFile(uri, context).reduceFileImage(),
-                    _currentDescription.value.toString()
+                    _currentDescription.value.toString(),
+                    currentLat.value,
+                    currentLon.value
                 )
             }
         } ?: run {

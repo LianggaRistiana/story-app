@@ -84,18 +84,26 @@ class StoryRepository(
         }
     }
 
-    suspend fun addStory(image: File, description: String): Result<GeneralResponse> {
+    suspend fun addStory(image: File, description: String, lat: Float? = null, lon: Float? = null): Result<GeneralResponse> {
         Result.Loading
         return try {
             val requestBody = description.toRequestBody("text/plain".toMediaType())
             val requestImage = image.asRequestBody("image/jpeg".toMediaType())
+            val latRequestBody = lat?.toString()?.toRequestBody("text/plain".toMediaType())
+            val lonRequestBody = lon?.toString()?.toRequestBody("text/plain".toMediaType())
+
             val multipartBody = MultipartBody.Part.createFormData(
                 "photo",
                 image.name,
                 requestImage
             )
             val token = userPreference.getUserSession().first().token
-            val response = apiService.addStory(multipartBody, requestBody, "Bearer $token")
+            val response = apiService.addStory(
+                lat = latRequestBody,
+                lon = lonRequestBody,
+                description = requestBody,
+                file = multipartBody,
+                token = "Bearer $token")
             Log.d(TAG, "addStory: $response")
             Result.Success(response)
         } catch (e: HttpException) {

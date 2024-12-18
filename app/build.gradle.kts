@@ -61,6 +61,10 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
 
+//    map
+    implementation(libs.play.services.maps.v1820)
+    implementation(libs.play.services.location)
+
 //     support
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
